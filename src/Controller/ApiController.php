@@ -38,28 +38,10 @@ class ApiController extends AbstractController
         return $this->json($this->serviceMeasurements->getCurrentValues());
     }
 
-    #[Route('/api/measurements/last24hours', name: 'app_api_measurements_currentvalues')]
+    #[Route('/api/measurements/last24hours', name: 'app_api_measurements_last24hours')]
     public function last24HoursValues(): JsonResponse
     {
         return $this->json($this->serviceMeasurements->getLast24HoursValues());
-    }
-
-    /**
-     * Method for to get the last 24 hours of values from sensor
-     *
-     * @return array one db object result
-     */
-    private function _getlast24Hours() {
-
-        $date = date('Y-m-d H:i:s', strtotime('-24 hour'));
-        $db = $this->_repository->createQueryBuilder('r')
-            ->where('(r.addDatetime > :date AND (r.tempDhtHic - r.tempBmp) < 8) OR (r.addDatetime > :date AND (r.tempBmp - r.tempDhtHic) < 8)')
-            ->setParameter('date', $date)
-            ->orderBy('r.addDatetime','asc');
-
-
-        return $db->getQuery()->getResult();
-
     }
 
     /**

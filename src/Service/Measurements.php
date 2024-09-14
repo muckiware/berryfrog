@@ -23,10 +23,7 @@ class Measurements
 
         /** @var Measurement $singleResultMeasurement */
         $singleResultMeasurement = $db->getQuery()->getSingleResult();
-        $currentValues = $singleResultMeasurement->toArray();
-        $currentValues['createDateTime'] = $singleResultMeasurement->getAddDatetime();
-
-        return $currentValues;
+        return $this->createMeasurementExtensions($singleResultMeasurement);
     }
 
     public function getLast24HoursValues(): array
@@ -34,7 +31,11 @@ class Measurements
         $last24HoursValues = array();
         $date = date('Y-m-d H:i:s', strtotime('-24 hour'));
         $db = $this->measurementsRepository->createQueryBuilder('m');
-        $db->where('(m.addDatetime > :date AND (m.tempDhtHic - m.tempBmp) < 8) OR (m.addDatetime > :date AND (m.tempBmp - m.tempDhtHic) < 8)');
+        $db->where('
+            (m.addDatetime > :date AND (m.tempDhtHic - m.tempBmp) < 8)
+            OR
+            (m.addDatetime > :date AND (m.tempBmp - m.tempDhtHic) < 8)
+        ');
         $db->setParameter('date', $date);
         $db->orderBy('m.addDatetime','asc');
 
@@ -42,12 +43,17 @@ class Measurements
         /** @var Measurement $resultMeasurement */
         $resultMeasurements = $db->getQuery()->getResult();
         foreach ($resultMeasurements as $resultMeasurement) {
-
-            $resultMeasurementArray = $resultMeasurement->toArray();
-            $resultMeasurementArray['createDateTime'] = $resultMeasurement->getAddDatetime();
-            $last24HoursValues[] = $resultMeasurementArray;
+            $last24HoursValues[] = $this->createMeasurementExtensions($resultMeasurement);
         }
 
         return $last24HoursValues;
+    }
+
+    public function createMeasurementExtensions(Measurement $resultMeasurement): array
+    {
+        $resultMeasurementArray = $resultMeasurement->toArray();
+        $resultMeasurementArray['createDateTime'] = $resultMeasurement->getAddDatetime();
+
+        return $resultMeasurementArray;
     }
 }
