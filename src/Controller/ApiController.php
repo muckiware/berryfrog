@@ -1,5 +1,8 @@
-<?php
-
+<?php declare(strict_types=1);
+/**
+ * @package    Berryfrog
+ * @copyright  Copyright (c) 2024 by muckiware
+ */
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +35,7 @@ class ApiController extends AbstractController
     #[Route('/api/measurements/currentvalues', name: 'app_api_measurements_currentvalues')]
     public function currentValues(): JsonResponse
     {
-        $currentValues = $this->serviceMeasurements->getCurrentValues()->toArray();
+        $currentValues = $this->serviceMeasurements->getCurrentValues();
         return $this->json($currentValues);
     }
 

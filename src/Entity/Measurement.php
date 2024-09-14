@@ -1,5 +1,8 @@
-<?php
-
+<?php declare(strict_types=1);
+/**
+ * @package    Berryfrog
+ * @copyright  Copyright (c) 2024 by muckiware
+ */
 namespace App\Entity;
 
 use App\Repository\MeasurementsRepository;
@@ -86,7 +89,7 @@ class Measurement
 
     public function getAddDatetime(): string
     {
-        return $this->addDatetime->format('Y-m-d H:i:s');
+        return $this->addDatetime->format('Y-m-d\TH:i:sO');
     }
 
     public function setAddDatetime(\DateTimeInterface $addDatetime): static
