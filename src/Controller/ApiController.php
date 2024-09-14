@@ -22,12 +22,12 @@ class ApiController extends AbstractController
     {}
 
     #[Route('/api', name: 'app_api')]
-    public function index(MeasurementsRepository $measurementsRepository): JsonResponse
+    public function index(): JsonResponse
     {
 
         $checkesr = $this->serviceMeasurements->getCurrentValues();
         return $this->json([
-            'message' => 'Welcome to your new controller!',
+            'message' => 'Welcome to berryfrog API',
             'path' => 'src/Controller/ApiController.php',
         ]);
     }
@@ -35,23 +35,15 @@ class ApiController extends AbstractController
     #[Route('/api/measurements/currentvalues', name: 'app_api_measurements_currentvalues')]
     public function currentValues(): JsonResponse
     {
-        $currentValues = $this->serviceMeasurements->getCurrentValues();
-        return $this->json($currentValues);
+        return $this->json($this->serviceMeasurements->getCurrentValues());
     }
 
-    /**
-     * Method for to get current values from sensor
-     *
-     * @return array one db object result
-     */
-//    private function getCurrentValues(MeasurementRepository $measurementRepository): array
-//    {
-//        $db = $measurementRepository->createQueryBuilder('m')
-//            ->setMaxResults(1)
-//            ->orderBy('m.id','desc');
-//
-//        return $db->getQuery()->getSingleResult();
-//    }
+    #[Route('/api/measurements/last24hours', name: 'app_api_measurements_currentvalues')]
+    public function last24HoursValues(): JsonResponse
+    {
+        return $this->json($this->serviceMeasurements->getLast24HoursValues());
+    }
+
     /**
      * Method for to get the last 24 hours of values from sensor
      *
