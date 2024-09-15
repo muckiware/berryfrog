@@ -21,17 +21,6 @@ class ApiController extends AbstractController
     )
     {}
 
-    #[Route('/api', name: 'app_api')]
-    public function index(): JsonResponse
-    {
-
-        $checkesr = $this->serviceMeasurements->getCurrentValues();
-        return $this->json([
-            'message' => 'Welcome to berryfrog API',
-            'path' => 'src/Controller/ApiController.php',
-        ]);
-    }
-
     #[Route('/api/measurements/currentvalues', name: 'app_api_measurements_currentvalues')]
     public function currentValues(): JsonResponse
     {
@@ -44,104 +33,10 @@ class ApiController extends AbstractController
         return $this->json($this->serviceMeasurements->getLast24HoursValues());
     }
 
-    /**
-     * Method for to get the last 7 days of values from sensor
-     *
-     * @return array one db object result
-     */
-    private function _getlastXDays($days) {
-
-        //$logger = $this->get('logger');
-        //$logger->info('We just go the logger');
-
-        $result = array();
-        $day_i = $days;
-
-        for ($i = 1; $i <= $days; $i++) {
-
-            $db = $this->_repository->createQueryBuilder('r');
-            $db->select('
-				min(r.tempDhtHic) as mintemp_dht_hic,
-				max(r.tempDhtHic) as maxtemp_dht_hic,
-				avg(r.tempDhtHic) as avgtemp_dht_hic,
-				min(r.tempDhtHif) as mintemp_dht_hif,
-				max(r.tempDhtHif) as maxtemp_dht_hif,
-				avg(r.tempDhtHif) as avgtemp_dht_hif,
-				min(r.humidityDht) as minhumidity_dht,
-				max(r.humidityDht) as maxhumidity_dht,
-				avg(r.humidityDht) as avghumidity_dht,
-				min(r.pressureBmp) as minpressure_bmp,
-				max(r.pressureBmp) as maxpressure_bmp,
-				avg(r.pressureBmp) as avgpressure_bmp,
-				min(r.tempBmp) as mintemp_bmp,
-				max(r.tempBmp) as maxtemp_bmp,
-				avg(r.tempBmp) as avgtemp_bmp,
-				min(r.addDatetime) as mindatetime,
-				max(r.addDatetime) as maxdatetime
-			');
-
-            $greater_date = date('Y-m-d 00:00:00', strtotime('-'.$day_i.' day'));
-            $less_date = date('Y-m-d 23:59:59', strtotime('-'.$day_i.' day'));
-
-            $db->setParameter('greaterdate', $greater_date);
-            $db->setParameter('lessdate', $less_date);
-            $db->where('
-				r.addDatetime < :lessdate
-				AND
-				r.addDatetime > :greaterdate
-				AND
-				(r.tempBmp - r.tempDhtHic) < 8
-				AND
-				(r.tempDhtHic - r.tempBmp) < 8
-			');
-
-            $db->orderBy('r.addDatetime','asc');
-
-            $data = $db->getQuery()->getResult();
-
-            if($data[0]['maxtemp_dht_hic'] > 60 || $data[0]['maxtemp_bmp'] > 60) {
-                //continue;
-            }
-
-            if($data[0]['mintemp_dht_hic'] < -50 || $data[0]['mintemp_bmp'] < -50) {
-                //continue;
-            }
-            $datas = array(
-                'mintemp_dht_hic' => number_format($data[0]['mintemp_dht_hic'],2),
-                'maxtemp_dht_hic' => number_format($data[0]['maxtemp_dht_hic'],2),
-                'avgtemp_dht_hic' => number_format($data[0]['avgtemp_dht_hic'],2),
-                'mintemp_dht_hif' => number_format($data[0]['mintemp_dht_hif'],2),
-                'maxtemp_dht_hif' => number_format($data[0]['maxtemp_dht_hif'],2),
-                'avgtemp_dht_hif' => number_format($data[0]['avgtemp_dht_hif'],2),
-                'minhumidity_dht' => number_format($data[0]['minhumidity_dht'],2),
-                'maxhumidity_dht' => number_format($data[0]['maxhumidity_dht'],2),
-                'avghumidity_dht' => number_format($data[0]['avghumidity_dht'],2),
-                'minpressure_bmp' => number_format($data[0]['minpressure_bmp'],2),
-                'maxpressure_bmp' => number_format($data[0]['maxpressure_bmp'],2),
-                'avgpressure_bmp' => number_format($data[0]['avgpressure_bmp'],2),
-                'mintemp_bmp' => number_format($data[0]['mintemp_bmp'],2),
-                'maxtemp_bmp' => number_format($data[0]['maxtemp_bmp'],2),
-                'avgtemp_bmp' => number_format($data[0]['avgtemp_bmp'],2),
-                'datetime_from' => $data[0]['mindatetime'],
-                'datetime_to' => $data[0]['maxdatetime'],
-                'dateday' => date("d.m.", strtotime($data[0]['mindatetime']))
-            );
-
-            //Return only valid temperatures in range of -50 to +60 °C
-            if(
-                number_format($data[0]['maxtemp_dht_hic'],2) < 60 &&
-                number_format($data[0]['maxtemp_bmp'],2) < 60 &&
-                number_format($data[0]['maxtemp_dht_hic'],2) > -50 &&
-                number_format($data[0]['maxtemp_bmp'],2) > -50
-            ) {
-                array_push($result,$datas);
-            }
-
-            $day_i = $day_i -1;
-
-        }
-
-        return $result;
+    #[Route('/api/measurements/last30days', name: 'app_api_measurements_last30days')]
+    public function last30daysValues(): JsonResponse
+    {
+        return $this->json($this->serviceMeasurements->getlastNDays(30));
     }
 
     /**
