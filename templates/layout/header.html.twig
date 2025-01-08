@@ -1,0 +1,30 @@
+{% block header %}
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}Wetterstation | Berryfrog{% endblock %}</title>
+
+        {% block stylesheet_head %}
+            <link rel="stylesheet" href="{{ asset('styles/foundation.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('styles/font-awesome.css') }}">
+            <link rel="stylesheet" href="{{ asset('styles/jquery-ui.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('styles/custom.css') }}">
+            <style>
+                canvas {
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                }
+            </style>
+        {% endblock %}
+
+        {% block javascript_head %}
+            <script src="{{ asset('js/jquery.min.js') }}"></script>
+            <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+            <script src="{{ asset('js/foundation.min.js') }}"></script>
+            <script src="{{ asset('js/chart.bundle.min.js') }}"></script>
+            <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
+        {% endblock %}
+    </head>
+{% endblock %}

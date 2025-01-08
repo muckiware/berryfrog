@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ app.request.locale }}">
+
+    {% include 'layout/header.html.twig' %}
+    <body>
+        <div class="hide-for-small-only">
+            <div class="callout large primary">
+                <div class="row column text-center">
+                    <div class="small-6 large-6 columns"><img src="{{ asset('image/logo.png') }}" alt="Berryfrog logo" class="float-right"></div>
+                    <div class="small-6 large-6 columns"><img src="{{ asset('image/sun-and-clouds.png') }}" alt="Sun and clouds logo" class="float-left sun-and-clouds"></div>
+                </div>
+            </div>
+        </div>
+        <div class="show-for-small-only">
+            <div class="callout large primary">
+                <div class="row column text-center">
+                    <div class="small-12 large-12 columns"><img src="{{ asset('image/logo.png') }}" alt="Berryfrog logo"></div>
+                </div>
+            </div>
+        </div>
+        {% block body %}{% endblock %}
+        {% include 'layout/footer.html.twig' %}
+    </body>
+</html>
+

@@ -12,7 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.2",
         "symfony/asset": "6.4.*",
-        "symfony/asset-mapper": "^6.4",
+        "symfony/asset-mapper": "6.4.*",
         "symfony/config": "6.4.*",
         "symfony/console": "6.4.*",
         "symfony/dependency-injection": "6.4.*",
@@ -23,10 +23,13 @@
         "symfony/twig-bundle": "6.4.*",
         "symfony/yaml": "6.4.*",
         "twig/extra-bundle": "^3.11",
-        "twig/intl-extra": "^3.11"
+        "twig/intl-extra": "^3.11",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "symfony/debug-bundle": "6.4.*",
         "symfony/maker-bundle": "^1.60",
+        "symfony/var-dumper": "6.4.*",
         "symfony/web-profiler-bundle": "6.4.*"
     },
     "config": {
