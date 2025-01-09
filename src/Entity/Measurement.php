@@ -89,7 +89,7 @@ class Measurement
 
     public function getAddDatetime(): string
     {
-        return $this->addDatetime->format('Y-m-d\TH:i:sO');
+        return $this->addDatetime->format('Y-m-d\TH:i:sP');
     }
 
     public function setAddDatetime(\DateTimeInterface $addDatetime): static
