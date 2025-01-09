@@ -152,35 +152,35 @@
                 complete: function() { jQuery('#loading-currentvalues').hide(); },
                 success: function(data) {
                     jQuery('#values').append(ObjUl);
-                    console.log(data);
+                    // console.log(data);
                     jQuery.each(data, function(key, item) {
-                        console.log(key + item);
+                        // console.log(key + item);
                         switch(key) {
-                            case 'temp_dht_hic':
+                            case 'tempDhtHic':
                                 jQuery('li.temp').remove();
                                 var Objli = jQuery('<li class="temp"><i class="fa fa-thermometer-three-quarters" aria-hidden="true"></i></li>');
                                 Objli.append('<span class="item-value">Temperatur:</span> <span class="value">' + item + '</span><span class="item-unit">°C</span>');
                                 ObjUl.append(Objli);
                                 break;
-                            case 'humidity_dht':
+                            case 'humidityDht':
                                 jQuery('li.humidity').remove();
                                 var Objli = jQuery('<li class="humidity"><i class="fa fa-tint" aria-hidden="true"></i></li>');
                                 Objli.append('<span class="item-value">Luftfeuchtigkeit:</span> <span class="value">' + item + '</span><span class="item-unit">%</span>');
                                 ObjUl.append(Objli);
                                 break;
-                            case 'pressure_bmp':
+                            case 'pressureBmp':
                                 jQuery('li.pressure').remove();
                                 var Objli = jQuery('<li class="pressure"><i class="fa fa-cloud" aria-hidden="true"></i></li>');
                                 Objli.append('<span class="item-value">Luftdruck:</span> <span class="value">' + item + '</span><span class="item-unit">hPa</span>');
                                 ObjUl.append(Objli);
                                 break;
-                            case 'uvindex_is':
+                            case 'uvindexIs':
                                 jQuery('li.uvindex').remove();
                                 var Objli = jQuery('<li class="uvindex"><i class="fa fa-sun-o" aria-hidden="true"></i></li>');
                                 Objli.append('<span class="item-value">UV-Index:</span> <span class="value">' + item +'</span>');
                                 ObjUl.append(Objli);
                                 break;
-                            case 'add_datetime':
+                            case 'createDateTime':
                                 jQuery('#valuedatetime').html('');
 
                                 jQuery('#valuedatetime').append(
@@ -237,11 +237,11 @@
                     data_pressure_bmp=[];
 
                 results.forEach(function(item) {
-                    labels.push(formatTime(item.add_datetime));
-                    data_temp_dht.push(parseFloat(item.temp_dht_hic));
-                    data_temp_bmp.push(parseFloat(item.temp_bmp));
-                    data_humidity_dht.push(parseFloat(item.humidity_dht));
-                    data_pressure_bmp.push(parseFloat(item.pressure_bmp));
+                    labels.push(formatTime(item.createDateTime));
+                    data_temp_dht.push(parseFloat(item.tempDhtHic));
+                    data_temp_bmp.push(parseFloat(item.tempBmp));
+                    data_humidity_dht.push(parseFloat(item.humidityDht));
+                    data_pressure_bmp.push(parseFloat(item.pressureBmp));
                 });
 
                 var ctx = document.getElementById("temp_chart");
@@ -411,7 +411,7 @@
             });
 
             var jsonData = $.ajax({
-                url: 'api/measurements/last30days',
+                url: 'api/measurements/last7days',
                 dataType: 'json',
                 method: 'GET',
                 timeout: '30000',

@@ -16,7 +16,6 @@ a {
 }
 a:hover {
 	color: #86a9cc;
-	718eab
 }
 img.float-left.sun-and-clouds {
 	position: relative;
@@ -24,9 +23,9 @@ img.float-left.sun-and-clouds {
 }
 .callout {
     border-bottom: 1px solid #008000;
-    border-left: 0px;
-    border-top: 0px;
-    border-right: 0px;
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
 }
 
 .blog-post {
@@ -101,7 +100,7 @@ a.accordion-title:hover {
 div.footer {
 	background-color: #fff;
 	bottom: 0;
-	box-shadow: 0 -1px 0px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 	color: #646464;
 	font: 11px Arial, sans-serif;
 	left: 0;

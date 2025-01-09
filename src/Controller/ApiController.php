@@ -33,6 +33,12 @@ class ApiController extends AbstractController
         return $this->json($this->serviceMeasurements->getLast24HoursValues());
     }
 
+    #[Route('/api/measurements/last7days', name: 'app_api_measurements_last7days')]
+    public function last7daysValues(): JsonResponse
+    {
+        return $this->json($this->serviceMeasurements->getlastNDays(7));
+    }
+
     #[Route('/api/measurements/last30days', name: 'app_api_measurements_last30days')]
     public function last30daysValues(): JsonResponse
     {
