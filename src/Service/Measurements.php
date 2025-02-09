@@ -96,32 +96,32 @@ class Measurements
 
             $data = $db->getQuery()->getSingleResult();
             $datas = array(
-                'mintemp_dht_hic' => number_format($data['mintemp_dht_hic'],2),
-                'maxtemp_dht_hic' => number_format($data['maxtemp_dht_hic'],2),
-                'avgtemp_dht_hic' => number_format($data['avgtemp_dht_hic'],2),
-                'mintemp_dht_hif' => number_format($data['mintemp_dht_hif'],2),
-                'maxtemp_dht_hif' => number_format($data['maxtemp_dht_hif'],2),
-                'avgtemp_dht_hif' => number_format($data['avgtemp_dht_hif'],2),
-                'minhumidity_dht' => number_format($data['minhumidity_dht'],2),
-                'maxhumidity_dht' => number_format($data['maxhumidity_dht'],2),
-                'avghumidity_dht' => number_format($data['avghumidity_dht'],2),
-                'minpressure_bmp' => number_format($data['minpressure_bmp'],2),
-                'maxpressure_bmp' => number_format($data['maxpressure_bmp'],2),
-                'avgpressure_bmp' => number_format($data['avgpressure_bmp'],2),
-                'mintemp_bmp' => number_format($data['mintemp_bmp'],2),
-                'maxtemp_bmp' => number_format($data['maxtemp_bmp'],2),
-                'avgtemp_bmp' => number_format($data['avgtemp_bmp'],2),
-                'datetime_from' => $data['mindatetime'],
-                'datetime_to' => $data['maxdatetime'],
-                'dateday' => date("d.m.", strtotime($data['mindatetime']))
+                'mintemp_dht_hic' => $this->prepareDataValue($data, 'mintemp_dht_hic'),
+                'maxtemp_dht_hic' => $this->prepareDataValue($data, 'maxtemp_dht_hic'),
+                'avgtemp_dht_hic' => $this->prepareDataValue($data, 'avgtemp_dht_hic'),
+                'mintemp_dht_hif' => $this->prepareDataValue($data, 'mintemp_dht_hif'),
+                'maxtemp_dht_hif' => $this->prepareDataValue($data, 'maxtemp_dht_hif'),
+                'avgtemp_dht_hif' => $this->prepareDataValue($data, 'avgtemp_dht_hif'),
+                'minhumidity_dht' => $this->prepareDataValue($data, 'minhumidity_dht'),
+                'maxhumidity_dht' => $this->prepareDataValue($data, 'maxhumidity_dht'),
+                'avghumidity_dht' => $this->prepareDataValue($data, 'avghumidity_dht'),
+                'minpressure_bmp' => $this->prepareDataValue($data, 'minpressure_bmp'),
+                'maxpressure_bmp' => $this->prepareDataValue($data, 'maxpressure_bmp'),
+                'avgpressure_bmp' => $this->prepareDataValue($data, 'avgpressure_bmp'),
+                'mintemp_bmp' => $this->prepareDataValue($data, 'mintemp_bmp'),
+                'maxtemp_bmp' => $this->prepareDataValue($data, 'maxtemp_bmp'),
+                'avgtemp_bmp' => $this->prepareDataValue($data, 'avgtemp_bmp'),
+                'datetime_from' => $this->prepareDataValueDatetime($data,'mindatetime'),
+                'datetime_to' => $this->prepareDataValueDatetime($data, 'maxdatetime'),
+                'dateday' => $this->prepareDataValueDate($data, 'mindatetime')
             );
 
             //Return only valid temperatures in range of -50 to +60 °C
             if(
-                number_format($data['maxtemp_dht_hic'],2) < 60 &&
-                number_format($data['maxtemp_bmp'],2) < 60 &&
-                number_format($data['maxtemp_dht_hic'],2) > -50 &&
-                number_format($data['maxtemp_bmp'],2) > -50
+                floatval($this->prepareDataValue($data, 'maxtemp_dht_hic')) < 60 &&
+                floatval($this->prepareDataValue($data, 'maxtemp_bmp')) < 60 &&
+                floatval($this->prepareDataValue($data, 'maxtemp_dht_hic')) > -50 &&
+                floatval($this->prepareDataValue($data, 'maxtemp_bmp')) > -50
             ) {
                 $result[] = $datas;
             }
@@ -139,5 +139,30 @@ class Measurements
         $resultMeasurementArray['createDateTime'] = $resultMeasurement->getAddDatetime();
 
         return $resultMeasurementArray;
+    }
+
+    public function prepareDataValue(array $data, string $dataKey): ?string
+    {
+        if(array_key_exists($dataKey, $data) && $data[$dataKey]) {
+            return number_format($data[$dataKey],2);
+        }
+        return null;
+    }
+
+    public function prepareDataValueDatetime(array $data, string $dataKey): ?string
+    {
+        if(array_key_exists($dataKey, $data) && $data[$dataKey]) {
+            return $data[$dataKey];
+        }
+        return null;
+    }
+
+    public function prepareDataValueDate(array $data, string $dataKey): ?string
+    {
+        if(array_key_exists($dataKey, $data) && $data[$dataKey]) {
+            return date("d.m.", strtotime($data['mindatetime']));
+        }
+
+        return null;
     }
 }
