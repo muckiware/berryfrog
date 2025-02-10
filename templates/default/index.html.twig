@@ -17,7 +17,7 @@
                     <div id="loading-currentvalues">
                         <p><img src="{{ asset('image/ajax-loader.gif') }}" />  Hole Daten, einen moment bitte...</p>
                     </div>
-                    <p>Hier die aktuellen Werte</p>
+                    <h2>Aktuellen Werte</h2>
                     <div id="values"></div>
                     <div id="valuedatetime"></div>
                 </div>
@@ -184,7 +184,7 @@
                                 jQuery('#valuedatetime').html('');
 
                                 jQuery('#valuedatetime').append(
-                                    'Meßdaten von ' +
+                                    'Messdaten vom ' +
                                     moment.weekdays(moment(item).day) + ', ' +
                                     moment(item).date() + '. ' +
                                     moment.months(moment(item).month()) + ' ' +
